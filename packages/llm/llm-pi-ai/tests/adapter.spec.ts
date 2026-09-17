@@ -123,6 +123,20 @@ describe('PiAiAdapter provider routing', () => {
     expect(server.headers[0]?.['user-agent']).toBe(userAgent())
   })
 
+  it('sends the loop session as x-opencode-session transport metadata', async () => {
+    const server = await mockServer([{ events: textEvents }])
+    const ctx = await harness(server.url)
+    await assemble(ctx, { model: 'deepseek-v4-flash', messages: [], sessionId: 'session-123' as never })
+    expect(server.headers[0]?.['x-opencode-session']).toBe('session-123')
+  })
+
+  it('omits x-opencode-session without a loop session', async () => {
+    const server = await mockServer([{ events: textEvents }])
+    const ctx = await harness(server.url)
+    await assemble(ctx, { model: 'deepseek-v4-flash', messages: [] })
+    expect(server.headers[0]?.['x-opencode-session']).toBeUndefined()
+  })
+
   it('forwards common stream options and profile reasoning', async () => {
     const server = await mockServer([{ events: textEvents }])
     const ctx = await harness(server.url, {

@@ -384,8 +384,14 @@ export class PiAiAdapter extends LlmAdapter {
         ...options.sessionId === undefined ? {} : { sessionId: String(options.sessionId) },
         signal: watchdog.signal,
         // Profile headers are deployment-owned; attribution names are
-        // Harness-owned and therefore win collisions.
-        headers: requestHeaders(profile.headers),
+        // Harness-owned and therefore win collisions. The OpenCode Go
+        // gateway requires a stable per-conversation session header for
+        // efficient routing on every protocol, so the loop-stamped session
+        // id is also sent as harness-owned transport metadata.
+        headers: requestHeaders({
+          ...profile.headers,
+          ...options.sessionId === undefined ? {} : { 'x-opencode-session': String(options.sessionId) },
+        }),
       })
       const iterator = toStreamChunks(events, model.contextWindow, options.signal, model.id)[Symbol.asyncIterator]()
       let exhausted = false
