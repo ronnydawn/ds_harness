@@ -1,0 +1,21 @@
+diff --git a/index.js b/index.js
+index 8934f948fae0ab4d1dbb3d606b5a9f2b484e9c48..5d7857693a3f20b0a23fe49eee0c9a46a994e28f 100644
+--- a/index.js
++++ b/index.js
+@@ -12,7 +12,6 @@
+ import z from "@deepseek-ai/schemastery";
+ import { TypertRemoteService } from "@deepseek-ai/dsh-typert-protocol";
+ import { credentialRef } from "@deepseek-ai/dsh-credentials";
+-import { settingsNamespace } from "@deepseek-ai/dsh-settings";
+ 
+ const DEFAULT_BASE_URL = "https://opencode.ai/zen/go/v1/usage";
+ const DEFAULT_TIMEOUT_MS = 15000;
+@@ -65,7 +64,7 @@ export class OpencodeUsageGateway extends TypertRemoteService {
+     // (the llm-pi-ai provider namespace keyed by the route id "opencode-go").
+     let configured = false;
+     try {
+-      const pi = this.ctx.settings.get(settingsNamespace("llm-pi-ai"));
++      const pi = this.ctx.settings.get("llm-pi-ai");
+       configured = !!(pi && pi.providers && pi.providers["opencode-go"]);
+     } catch {
+       configured = false;

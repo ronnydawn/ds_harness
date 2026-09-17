@@ -1,0 +1,27 @@
+{
+  "name": "dsh-profile-web",
+  "private": true,
+  "dependencies": {
+    "dsh-better-sidebar": "0.19.1",
+    "dsh-codex-subscription": "^2.1.1",
+    "dsh-obsidian": "0.2.3",
+    "dsh-opencode-go-usage-dock": "github:xv-chang/dsh-opencode-go-usage-dock",
+    "dsh-subagent-model-router": "github:CypherNaught-0x/DSH-Subagent-Model-Router",
+    "dsh-subagent-model-routing": "^0.1.1"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dsh-better-sidebar",
+        "dsh-obsidian",
+        "dsh-subagent-model-router",
+        "dsh-codex-subscription",
+        "dsh-subagent-model-routing",
+        "dsh-opencode-go-usage-dock"
+      ],
+      "patchReload": "live"
+    }
+  }
+}

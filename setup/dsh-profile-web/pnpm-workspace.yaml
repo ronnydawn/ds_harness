@@ -1,0 +1,19 @@
+packages:
+  - .
+
+allowBuilds:
+  '@google/genai': set this to true or false
+  '@google/genai@1.52.0': true
+  node-pty: true
+  protobufjs: set this to true or false
+  protobufjs@7.6.6: true
+
+autoInstallPeers: false
+
+minimumReleaseAgeExclude:
+  - dsh-better-sidebar@0.18.0
+
+nodeLinker: hoisted
+
+patchedDependencies:
+  dsh-opencode-go-usage-dock@0.1.4: patches/dsh-opencode-go-usage-dock@0.1.4.patch
