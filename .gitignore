@@ -3,6 +3,7 @@ CLAUDE.local.md
 node_modules/
 lib/
 *.tsbuildinfo
+!kanban-en/out/lib/
 pnpm-debug.log
 .pnpm-store/
 .cache/
