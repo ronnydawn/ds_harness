@@ -10,12 +10,26 @@ index 8934f948fae0ab4d1dbb3d606b5a9f2b484e9c48..5d7857693a3f20b0a23fe49eee0c9a46
  
  const DEFAULT_BASE_URL = "https://opencode.ai/zen/go/v1/usage";
  const DEFAULT_TIMEOUT_MS = 15000;
-@@ -65,7 +64,7 @@ export class OpencodeUsageGateway extends TypertRemoteService {
-     // (the llm-pi-ai provider namespace keyed by the route id "opencode-go").
+@@ -64,8 +63,18 @@ export class OpencodeUsageGateway extends TypertRemoteService {
+-    // Precondition: opencode-go must be present in Settings -> Models
+-    // (the llm-pi-ai provider namespace keyed by the route id "opencode-go").
++    // Precondition: an opencode-go provider must be present in Settings -> Models
++    // (the llm-pi-ai provider namespace: the exact "opencode-go" route id, an
++    // "opencode-go-*" route id, or any provider wired to OPENCODE_GO_API_KEY or
++    // an opencode.ai base URL).
      let configured = false;
      try {
 -      const pi = this.ctx.settings.get(settingsNamespace("llm-pi-ai"));
 +      const pi = this.ctx.settings.get("llm-pi-ai");
-       configured = !!(pi && pi.providers && pi.providers["opencode-go"]);
+-      configured = !!(pi && pi.providers && pi.providers["opencode-go"]);
++      const providers = (pi && pi.providers) || {};
++      configured = Object.keys(providers).some((name) => {
++        if (name === "opencode-go" || name.startsWith("opencode-go-")) return true;
++        const entry = providers[name];
++        if (!entry || typeof entry !== "object") return false;
++        if (entry.apiKeyEnv === "OPENCODE_GO_API_KEY") return true;
++        const urls = [entry.baseURL, entry.baseUrl];
++        return urls.some((url) => typeof url === "string" && url.includes("opencode.ai"));
++      });
      } catch {
        configured = false;
